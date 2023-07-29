@@ -2,6 +2,10 @@ import localFont from "next/font/local";
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { Analytics } from "@vercel/analytics/react";
+import { GoogleAnalytics } from "nextjs-google-analytics";
+import { GoogleAdSense } from "nextjs-google-adsense";
+
 import "/node_modules/flag-icons/css/flag-icons.min.css";
 
 // styles
@@ -42,6 +46,15 @@ export default function RootLayout({
     <html lang="pl" className={nexa.className}>
       <body>
         {children}
+
+        <Analytics />
+        <GoogleAnalytics
+          gaMeasurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || ""}
+          trackPageViews
+        />
+        <GoogleAdSense
+          publisherId={process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID || ""}
+        />
 
         <footer>
           <div className="responsiveHolder">
