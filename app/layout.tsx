@@ -2,15 +2,12 @@ import localFont from "next/font/local";
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { Analytics } from "@vercel/analytics/react";
-import { GoogleAnalytics } from "nextjs-google-analytics";
-import { GoogleAdSense } from "nextjs-google-adsense";
-
 import "/node_modules/flag-icons/css/flag-icons.min.css";
 
-// styles
 import "./globals.scss";
 import "the-new-css-reset/css/reset.css";
+
+import AnalyticScripts from "../components/analyticScripts";
 
 // font
 const nexa = localFont({
@@ -47,14 +44,7 @@ export default function RootLayout({
       <body>
         {children}
 
-        <Analytics />
-        <GoogleAnalytics
-          gaMeasurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || ""}
-          trackPageViews
-        />
-        <GoogleAdSense
-          publisherId={process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID || ""}
-        />
+        <AnalyticScripts />
 
         <footer>
           <div className="responsiveHolder">
