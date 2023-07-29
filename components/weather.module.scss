@@ -1,0 +1,132 @@
+.component {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  & > * {
+    width: 50%;
+  }
+}
+
+.current {
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 200%;
+
+    img {
+      filter: invert(1);
+      user-select: none;
+    }
+
+    span {
+      scale: 65%;
+    }
+  }
+
+  div {
+    display: flex;
+    gap: 1rem;
+    font-size: 120%;
+
+    p {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+.tempHolder {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.temperature {
+  margin-left: 0.5rem;
+  position: relative;
+  display: flex;
+  font-size: 400%;
+
+  span {
+    font-size: 50%;
+    bottom: 0.8rem;
+  }
+}
+
+.tempUnit {
+  position: relative;
+  bottom: 1.5px;
+  left: 3px;
+  font-size: 75%;
+}
+
+.windDirection {
+  margin-right: 3px;
+  user-select: none;
+  filter: invert(1);
+}
+
+.map {
+  border-radius: 0.4rem;
+  border: 1px solid rgba(#030303, 0.1);
+  background: rgba(#696969, 0.15);
+  backdrop-filter: blur(13px);
+
+  iframe {
+    opacity: 0;
+    border: 0;
+    width: 100%;
+    height: 100%;
+
+    border-radius: 0.4rem;
+    filter: contrast(125%) brightness(80%);
+    transition: 0.2s opacity ease-out;
+  }
+}
+
+.forecast {
+  margin-top: 3%;
+  padding: 5px 0;
+  width: 100%;
+  display: flex;
+  overflow-x: auto;
+  gap: 5px;
+
+  .item {
+    padding: 1rem 0.5rem;
+    min-width: 7rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    border-radius: 0.4rem;
+    border: 1px solid rgba(#030303, 0.1);
+    box-shadow: 0 4px 30px rgba(#030303, 0.3);
+    background: rgba(#696969, 0.15);
+    backdrop-filter: blur(13px);
+
+    .data {
+      font-size: 120%;
+      text-align: center;
+
+      p {
+        font-size: 75%;
+        opacity: 55%;
+      }
+    }
+
+    img {
+      padding: 1rem 0;
+      height: auto;
+    }
+
+    h5 {
+      font-size: 135%;
+      font-weight: bold;
+    }
+  }
+}

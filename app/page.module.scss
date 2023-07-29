@@ -1,0 +1,104 @@
+.search {
+  position: relative;
+  font-weight: bold;
+  color: rgba(#030303, 0.9);
+
+  .searchBox {
+    gap: 0;
+
+    input,
+    button {
+      height: 3rem;
+    }
+
+    input {
+      width: 20rem;
+      border-radius: 0.4rem 0 0 0.4rem;
+      background-color: #ededed;
+
+      &:hover {
+        background-color: #dfdfdf;
+      }
+
+      &:focus {
+        box-shadow: none;
+      }
+    }
+
+    button {
+      width: 6rem;
+      border-radius: 0 0.4rem 0.4rem 0;
+
+      &:hover {
+        background-color: #c5c5c5;
+      }
+    }
+  }
+}
+
+.results {
+  position: absolute;
+  top: 3.1rem;
+  width: calc(20rem + 6rem);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+
+  font-weight: bold;
+  color: rgba(#030303, 0.85);
+  background-color: #d2d2d2;
+  border-radius: 0 0 0.4rem 0.4rem;
+}
+
+.result {
+  padding: 0.8rem 1.25rem;
+  gap: 6px;
+  transition: 0.2s background-color ease-out;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #b9b9b9;
+  }
+
+  p {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+.loading {
+  margin-top: 5%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+
+  h2 {
+    position: relative;
+    left: 5px;
+    font-size: 150%;
+    font-weight: bold;
+  }
+}
+
+.loader {
+  border: 16px solid #d2d2d2;
+  border-top: 16px solid #4378bd;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

@@ -1,7 +1,8 @@
 {
-  "name": "weather-app",
   "version": "0.1.0",
-  "private": true,
+  "name": "weather-app",
+  "description": "Weather App built with Next.js",
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -12,11 +13,17 @@
     "@types/node": "20.4.5",
     "@types/react": "18.2.17",
     "@types/react-dom": "18.2.7",
-    "eslint": "8.45.0",
+    "axios": "^1.4.0",
+    "dotenv": "^16.3.1",
+    "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
+    "flag-icons": "^6.9.2",
+    "moment": "^2.29.4",
     "next": "13.4.12",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "sass": "^1.64.1",
+    "the-new-css-reset": "^1.9.0",
     "typescript": "5.1.6"
   }
 }
