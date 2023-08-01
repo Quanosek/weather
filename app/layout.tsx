@@ -20,7 +20,7 @@ const nexa = localFont({
       weight: "400",
     },
     {
-      path: "./fonts/nexa_heavy.woff2",
+      path: "./fonts/nexa_bold.woff2",
       weight: "800",
     },
   ],
