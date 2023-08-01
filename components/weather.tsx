@@ -154,8 +154,9 @@ export default function Weather(params: { data: any }) {
           </div>
         </div>
 
-        <div className={styles.map}>
+        <div>
           <iframe
+            className={styles.map}
             name="windy-map"
             loading="eager"
             src={`https://embed.windy.com/embed2.html?lat=${data.coord.lat}&lon=${data.coord.lon}&detailLat=${data.coord.lat}&detailLon=${data.coord.lon}&zoom=7&level=surface&overlay=wind&product=ecmwf&menu=&message=true&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=m%2Fs&metricTemp=%C2%B0C&radarRange=-1`}

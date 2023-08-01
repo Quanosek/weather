@@ -7,7 +7,7 @@ import "/node_modules/flag-icons/css/flag-icons.min.css";
 import "./globals.scss";
 import "the-new-css-reset/css/reset.css";
 
-import AnalyticScripts from "../components/analyticScripts";
+import Analytic from "../components/analytic";
 
 // font
 const nexa = localFont({
@@ -44,7 +44,8 @@ export default function RootLayout({
       <body>
         {children}
 
-        <AnalyticScripts />
+        {/* show analytics only in production */}
+        {process.env.NODE_ENV !== "development" && <Analytic />}
 
         <footer>
           <div className="responsiveHolder">

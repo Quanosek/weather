@@ -4,7 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { GoogleAnalytics } from "nextjs-google-analytics";
 import { GoogleAdSense } from "nextjs-google-adsense";
 
-export default function AnalyticScripts() {
+export default function Analytic() {
   return (
     <>
       {/* Vercel */}

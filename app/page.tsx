@@ -1,4 +1,4 @@
-"use client"; // for client-side only
+"use client";
 
 import Image from "next/image";
 import { useState, useCallback, useEffect } from "react";
@@ -16,30 +16,79 @@ const KEY = process.env.NEXT_PUBLIC_WEATHER_API_KEY; // api key from .env.local
 export default function Home() {
   // hook params
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<number | undefined>();
+  const [error, setError] = useState<string | number | undefined>();
 
   const [data, setData] = useState<any>();
   const [results, setResults] = useState<object[]>();
 
   // get location data
   const locationData = useCallback(() => {
-    if (!navigator.geolocation) return;
+    setError(undefined);
 
-    navigator.geolocation.getCurrentPosition((position) => {
-      const { latitude, longitude } = position.coords;
-      getData(latitude, longitude);
+    navigator.geolocation.getCurrentPosition(
+      // return positioning data
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        getData(latitude, longitude);
 
-      localStorage.setItem("location", "true");
-    });
+        localStorage.setItem("location", "true");
+      },
+
+      // error handling
+      (err) => {
+        switch (err.code) {
+          case 1:
+            setError(
+              "Nie udzielono uprawnień potrzebnych do uzyskania twojej lokalizacji"
+            );
+            break;
+          case 2:
+            return setError("Nie udało się ustalić twojej lokalizacji");
+          case 3:
+            return setError(
+              "Przekroczono czas przy próbie uzyskania danych o twojej lokalizacji"
+            );
+          default:
+            return setError("Nieznany błąd geolokalizacji");
+        }
+      }
+    );
   }, []);
 
   // show location weather on load
-  useEffect(() => {
-    locationData();
-  }, [locationData]);
+  useEffect(locationData, [locationData]);
 
+  // searching results
+  const getResults = (e: any) => {
+    if (!e.target.value) return setResults(undefined);
+
+    axios({
+      method: "get",
+      url: "https://api.openweathermap.org/geo/1.0/direct",
+      params: {
+        q: e.target.value,
+        limit: 5,
+        appid: KEY,
+      },
+    })
+      .then(({ data }) => setResults(data))
+      .catch((reason: AxiosError) => setError(reason.response!.status));
+  };
+
+  // get data from first result
+  const firstResult = () => {
+    if (!results) return;
+    if (!results[0]) return;
+
+    const { lat, lon } = results[0] as any;
+    getData(lat, lon);
+    setResults(undefined);
+  };
+
+  // read data from API
   const getData = async (lat: number, lon: number) => {
     setLoading(true);
+    setError(undefined);
     localStorage.removeItem("location");
 
     // all mayor data
@@ -110,43 +159,23 @@ export default function Home() {
     setLoading(false);
   };
 
-  const getResults = (e: any) => {
-    if (!e.target.value) return setResults(undefined);
-
-    axios({
-      method: "get",
-      url: "https://api.openweathermap.org/geo/1.0/direct",
-      params: {
-        q: e.target.value,
-        limit: 5,
-        appid: KEY,
-      },
-    })
-      .then(({ data }) => setResults(data))
-      .catch((reason: AxiosError) => setError(reason.response!.status));
-  };
-
-  const firstResult = () => {
-    if (!results) return;
-    if (!results[0]) return;
-
-    const { lat, lon } = results[0] as any;
-    getData(lat, lon);
-    setResults(undefined);
-  };
-
   // handle errors
   useEffect(() => {
-    if (error) {
-      alert(
-        `Wystąpił błąd ${error}. ${
-          error == 429
-            ? "Osiągnięto limit zapytań, spróbuj ponownie później"
-            : "Spróbuj ponownie później"
-        }.`
-      );
+    if (!error || !data) return;
+
+    let errorMessage = "";
+    if (typeof error === "number") {
+      errorMessage = `Wystąpił błąd ${error}. ${
+        error == 429
+          ? "Osiągnięto limit zapytań, spróbuj ponownie później"
+          : "Spróbuj ponownie później"
+      }.`;
+    } else {
+      errorMessage = `${error}, zamiast tego skorzystaj z wyszukiwarki.`;
     }
-  }, [error]);
+
+    alert(errorMessage);
+  }, [data, error]);
 
   return (
     <>
@@ -212,6 +241,7 @@ export default function Home() {
               onClick={() => {
                 locationData();
                 setResults(undefined);
+
                 const serach = document.getElementById(
                   "search"
                 ) as HTMLInputElement;
@@ -250,17 +280,44 @@ export default function Home() {
       {/* page */}
       <main style={{ backgroundImage: "url(/wallpaper.webp)" }}>
         <div className="responsiveHolder">
+          {/* loading screen component */}
           {loading && (
             <div className={styles.loading}>
-              <div className={styles.loader} />
-              <h2>Ładowanie...</h2>
+              {!error && (
+                // loading animation
+                <>
+                  <div className={styles.loader} />
+                  <h2>Ładowanie...</h2>
+                </>
+              )}
+
+              <div
+                style={{
+                  position: "relative",
+                  top: error ? 0 : "10vh",
+                  opacity: error ? 1 : 0,
+                  transition: "all 0.4s ease-out",
+                }}
+              >
+                {error && (
+                  // error message
+                  <h2>{error}, zamiast tego skorzystaj z&nbsp;wyszukiwarki.</h2>
+                )}
+              </div>
             </div>
           )}
 
-          {!loading && (
-            // weather data component
-            <Weather data={data} />
-          )}
+          {/* weather data component */}
+          <div
+            style={{
+              position: "relative",
+              top: !loading ? 0 : "10vh",
+              opacity: !loading ? 1 : 0,
+              transition: "all 0.4s ease-out",
+            }}
+          >
+            {!loading && <Weather data={data} />}
+          </div>
         </div>
       </main>
     </>
