@@ -53,7 +53,7 @@ export default function Weather(params: { data: any }) {
 
   return (
     <>
-      <div className={styles.component}>
+      <div className={styles.currentHandler}>
         <div className={styles.current}>
           <p>
             {moment
@@ -161,42 +161,76 @@ export default function Weather(params: { data: any }) {
             loading="eager"
             src={`https://embed.windy.com/embed2.html?lat=${data.coord.lat}&lon=${data.coord.lon}&detailLat=${data.coord.lat}&detailLon=${data.coord.lon}&zoom=7&level=surface&overlay=wind&product=ecmwf&menu=&message=true&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=m%2Fs&metricTemp=%C2%B0C&radarRange=-1`}
             onLoad={(e: any) => {
+              const style = e.target.style;
               // show iframe only if fully loaded
-              e.target.style.opacity = 1;
+              style.opacity = 1;
+              style.filter = "contrast(125%) brightness(80%) blur(0)";
+              style.transition =
+                "0.15s filter ease-out, 0.4s opacity ease-in-out";
             }}
           />
         </div>
       </div>
 
-      <div className={styles.forecast}>
-        {data.forecast.map((item: any, index: number) => (
-          <div key={index} className={styles.item}>
-            <div className={styles.data}>
-              <h4>
-                {moment
-                  .utc(item.dt, "X")
-                  .add(data.timezone, "seconds")
-                  .format("HH:mm")}
-              </h4>
+      <div className={styles.forecastHandler}>
+        <button
+          style={{
+            left: "-3rem",
+          }}
+          onClick={() => {
+            const scroll = document.getElementById(
+              "horizontal-scroll"
+            ) as HTMLElement;
+            scroll.scrollLeft -= 600;
+          }}
+        >
+          {"<"}
+        </button>
 
-              <p>
-                {moment
-                  .utc(item.dt, "X")
-                  .add(data.timezone, "seconds")
-                  .format("DD.MM")}
-              </p>
+        <div id="horizontal-scroll" className={styles.forecast}>
+          {data.forecast.map((item: any, index: number) => (
+            <div key={index} className={styles.item}>
+              <div className={styles.data}>
+                <h4>
+                  {moment
+                    .utc(item.dt, "X")
+                    .add(data.timezone, "seconds")
+                    .format("HH:mm")}
+                </h4>
+
+                <p>
+                  {moment
+                    .utc(item.dt, "X")
+                    .add(data.timezone, "seconds")
+                    .format("DD.MM")}
+                </p>
+              </div>
+
+              <Image
+                src={`/weather/${item.weather[0].icon}.svg`}
+                alt="icon"
+                width={60}
+                height={60}
+                draggable={false}
+              />
+              <h5>{item.main.temp.toFixed(0)}°C</h5>
             </div>
+          ))}
+        </div>
 
-            <Image
-              src={`/weather/${item.weather[0].icon}.svg`}
-              alt="icon"
-              width={60}
-              height={60}
-              draggable={false}
-            />
-            <h5>{item.main.temp.toFixed(0)}°C</h5>
-          </div>
-        ))}
+        <button
+          style={{
+            right: "-3rem",
+          }}
+          onClick={() => {
+            const scroll = document.getElementById(
+              "horizontal-scroll"
+            ) as HTMLElement;
+            scroll.scrollLeft += 600;
+          }}
+        >
+          {">"}
+        </button>
       </div>
     </>
   );

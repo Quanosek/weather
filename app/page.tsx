@@ -251,8 +251,8 @@ export default function Home() {
               <Image
                 src="/icons/location.svg"
                 alt="location"
-                width={30}
-                height={30}
+                width={25}
+                height={25}
                 draggable={false}
               />
             </button>
@@ -269,8 +269,8 @@ export default function Home() {
             <Image
               src={`/icons/fullscreen.svg`}
               alt="fullscreen"
-              width={30}
-              height={30}
+              width={25}
+              height={25}
               draggable={false}
             />
           </button>

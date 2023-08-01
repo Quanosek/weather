@@ -1,9 +1,4 @@
-.container {
-  position: relative;
-  transition: 1s ease-out;
-}
-
-.component {
+.currentHandler {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -11,10 +6,23 @@
   & > * {
     width: 50%;
   }
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+
+    & > * {
+      width: 100%;
+    }
+  }
 }
 
 .current {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
   h2 {
+    margin-top: -5px;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -32,18 +40,23 @@
 
   div {
     display: flex;
-    gap: 1rem;
+    gap: 1.1rem;
     font-size: 120%;
 
-    p {
+    & > * {
       position: relative;
       display: flex;
       align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      font-size: 100%;
     }
   }
 }
 
 .tempHolder {
+  margin: 0.2rem 0 1rem;
   flex-direction: row-reverse;
   justify-content: flex-end;
   align-items: center;
@@ -54,18 +67,19 @@
   position: relative;
   display: flex;
   font-size: 400%;
+  font-weight: lighter;
 
   span {
-    font-size: 50%;
-    bottom: 0.8rem;
+    font-size: 45%;
+    bottom: 1rem;
   }
 }
 
 .tempUnit {
   position: relative;
-  bottom: 1.5px;
-  left: 3px;
-  font-size: 75%;
+  bottom: 2px;
+  left: 2px;
+  font-size: 70%;
 }
 
 .windDirection {
@@ -81,20 +95,67 @@
   height: 100%;
 
   border-radius: 0.4rem;
-  filter: contrast(125%) brightness(80%);
-  transition: 0.4s opacity ease-out;
+  border: 1px solid rgba(#030303, 0.1);
+  box-shadow: 0 4px 30px rgba(#030303, 0.25);
+  filter: contrast(125%) brightness(80%) blur(10px);
+
+  @media (max-width: 1024px) {
+    margin-top: 2rem;
+    height: 20rem;
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.forecastHandler {
+  margin-top: 0.5rem;
+  position: relative;
+  display: flex;
+
+  button {
+    z-index: 1;
+    opacity: 0;
+    height: 50%;
+    width: 3.5rem;
+    position: absolute;
+    top: calc(25% + 6%);
+    background: none;
+    font-size: 400%;
+    filter: invert(1);
+    user-select: none;
+    transition: 0.15s opacity ease-in-out, 0.15s transform ease-out;
+  }
+
+  @media (min-width: 768px) {
+    &:hover button {
+      opacity: 65%;
+
+      &:hover {
+        opacity: 100%;
+        transform: translateY(-2px);
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    button {
+      opacity: 100%;
+    }
+  }
 }
 
 .forecast {
-  margin-top: 3%;
-  padding: 5px 0;
+  padding: 3% 0 5px;
   width: 100%;
   display: flex;
   overflow-x: auto;
   gap: 5px;
+  scroll-behavior: smooth;
 
   .item {
-    padding: 1rem 0.5rem;
+    padding: 1.2rem 0;
     min-width: 7rem;
     display: flex;
     flex-direction: column;
@@ -103,15 +164,16 @@
 
     border-radius: 0.4rem;
     border: 1px solid rgba(#030303, 0.1);
-    box-shadow: 0 4px 30px rgba(#030303, 0.3);
-    background: rgba(#696969, 0.15);
-    backdrop-filter: blur(13px);
+    box-shadow: 0 4px 30px rgba(#030303, 0.25);
+    background: rgba(#696969, 0.2);
+    backdrop-filter: blur(12px);
 
     .data {
       font-size: 120%;
       text-align: center;
 
       p {
+        margin-top: 3px;
         font-size: 75%;
         opacity: 55%;
       }

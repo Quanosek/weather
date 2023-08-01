@@ -16,12 +16,15 @@
       border-radius: 0.4rem 0 0 0.4rem;
       background-color: #ededed;
 
-      &:hover {
-        background-color: #dfdfdf;
+      &:focus {
+        // tab navigation remove default shadow
+        box-shadow: none;
       }
 
-      &:focus {
-        box-shadow: none;
+      @media (min-width: 768px) {
+        &:hover {
+          background-color: #dfdfdf;
+        }
       }
     }
 
@@ -29,8 +32,10 @@
       width: 6rem;
       border-radius: 0 0.4rem 0.4rem 0;
 
-      &:hover {
-        background-color: #c5c5c5;
+      @media (min-width: 768px) {
+        &:hover {
+          background-color: #c5c5c5;
+        }
       }
     }
   }
@@ -57,14 +62,14 @@
   transition: 0.2s background-color ease-out;
   cursor: pointer;
 
-  &:hover {
-    background-color: #b9b9b9;
-  }
-
   p {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+  }
+
+  &:hover {
+    background-color: #b9b9b9;
   }
 }
 

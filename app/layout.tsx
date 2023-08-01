@@ -9,31 +9,31 @@ import "the-new-css-reset/css/reset.css";
 
 import Analytic from "../components/analytic";
 
-// font
 const nexa = localFont({
   src: [
     {
-      path: "./fonts/Nexa_ExtraLight.woff2",
+      path: "./fonts/nexa_light.woff2",
       weight: "200",
-      style: "normal",
     },
     {
-      path: "./fonts/Nexa_Heavy.woff2",
-      weight: "600",
-      style: "bold",
+      path: "./fonts/nexa_regular.woff2",
+      weight: "400",
+    },
+    {
+      path: "./fonts/nexa_heavy.woff2",
+      weight: "800",
     },
   ],
 
+  style: "normal",
   display: "swap",
 });
 
-// metadata
 export const metadata: Metadata = {
   title: "Pogoda / klalo.pl",
   description: "Weather App built with Next.js",
 };
 
-// layout
 export default function RootLayout({
   children,
 }: {
@@ -50,7 +50,7 @@ export default function RootLayout({
         <footer>
           <div className="responsiveHolder">
             <p>
-              Stworzone z 💙 przez{" "}
+              Stworzone z <span>💙</span> przez{" "}
               <Link href="https://github.com/Quanosek">Jakuba Kłało</Link>
             </p>
 

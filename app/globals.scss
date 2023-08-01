@@ -54,7 +54,6 @@ header,
 footer {
   width: 100%;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
 
@@ -65,7 +64,7 @@ footer {
   }
 }
 
-$headerHeight: 5rem;
+$headerHeight: 4.8rem;
 
 header {
   z-index: 99;
@@ -74,10 +73,10 @@ header {
   position: fixed;
   top: 0;
 
-  background: rgba(#030303, 0.2);
+  border: 1px solid rgba(#030303, 0.1);
   box-shadow: 0 4px 30px rgba(#000000, 0.25);
-  border: 1px solid rgba(#030303, 0.2);
-  backdrop-filter: blur(10px);
+  background: rgba(#030303, 0.2);
+  backdrop-filter: blur(12px);
 
   h1 {
     margin-right: 1rem;
@@ -96,13 +95,35 @@ header {
   }
 
   button {
-    padding: 0.5rem;
+    padding: 0;
+    height: 2.5rem;
+    aspect-ratio: 1/1;
   }
 }
 
 footer {
   padding: 1.5rem 3%;
   font-size: 90%;
+  font-weight: lighter;
+
+  span {
+    position: relative;
+    bottom: 1px;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    padding: 1rem 1%;
+    font-size: 75%;
+
+    .responsiveHolder {
+      flex-direction: column;
+      gap: 5px;
+    }
+  }
 }
 
 main {
@@ -133,12 +154,15 @@ input,
 button {
   padding: 5px 20px;
   border-radius: 0.4rem;
+  color: #030303;
   background-color: #d2d2d2;
   transition: 0.2s background-color ease-out;
   cursor: pointer;
 
-  &:hover {
-    background-color: #b9b9b9;
+  @media (min-width: 768px) {
+    &:hover {
+      background-color: #b9b9b9;
+    }
   }
 }
 
