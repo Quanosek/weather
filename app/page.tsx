@@ -36,21 +36,26 @@ export default function Home() {
 
       // error handling
       (err) => {
+        let message = "";
+
         switch (err.code) {
           case 1:
-            setError(
-              "Nie udzielono uprawnień potrzebnych do uzyskania twojej lokalizacji"
-            );
+            message =
+              "Nie udzielono uprawnień potrzebnych do uzyskania twojej lokalizacji";
             break;
           case 2:
-            return setError("Nie udało się ustalić twojej lokalizacji");
+            message = "Nie udało się ustalić twojej lokalizacji";
+            break;
           case 3:
-            return setError(
-              "Przekroczono czas przy próbie uzyskania danych o twojej lokalizacji"
-            );
+            message =
+              "Przekroczono czas przy próbie uzyskania danych o twojej lokalizacji";
+            break;
           default:
-            return setError("Nieznany błąd geolokalizacji");
+            message = "Nieznany błąd geolokalizacji";
+            break;
         }
+
+        setError(message);
       }
     );
   }, []);
@@ -155,15 +160,12 @@ export default function Home() {
 
     // return all data
     setData({ ...current, air, forecast });
-
     setLoading(false);
   };
 
-  // handle errors
-  useEffect(() => {
-    if (!error || !data) return;
-
+  const rewriteError = (error: string | number) => {
     let errorMessage = "";
+
     if (typeof error === "number") {
       errorMessage = `Wystąpił błąd ${error}. ${
         error == 429
@@ -174,7 +176,13 @@ export default function Home() {
       errorMessage = `${error}, zamiast tego skorzystaj z wyszukiwarki.`;
     }
 
-    alert(errorMessage);
+    return errorMessage;
+  };
+
+  // handle errors
+  useEffect(() => {
+    if (!data || !error) return;
+    alert(rewriteError(error));
   }, [data, error]);
 
   return (
@@ -277,8 +285,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* page */}
-      <main style={{ backgroundImage: "url(/wallpaper.webp)" }}>
+      <main>
         <div className="responsiveHolder">
           {/* loading screen component */}
           {loading && (
@@ -301,7 +308,7 @@ export default function Home() {
               >
                 {error && (
                   // error message
-                  <h2>{error}, zamiast tego skorzystaj z&nbsp;wyszukiwarki.</h2>
+                  <h2>{rewriteError(error)}</h2>
                 )}
               </div>
             </div>

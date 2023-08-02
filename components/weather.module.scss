@@ -41,7 +41,7 @@
   div {
     display: flex;
     gap: 1.1rem;
-    font-size: 120%;
+    font-size: min(120%, 1.5vw);
 
     & > * {
       position: relative;
@@ -49,8 +49,9 @@
       align-items: center;
     }
 
-    @media (max-width: 768px) {
-      font-size: 100%;
+    @media (max-width: 1024px) {
+      font-size: min(120%, 3.4vw);
+      gap: min(1.1rem, 2vw);
     }
   }
 }
@@ -128,7 +129,13 @@
     transition: 0.15s opacity ease-in-out, 0.15s transform ease-out;
   }
 
-  @media (min-width: 768px) {
+  @media (max-width: 1024px) {
+    button {
+      opacity: 100%;
+    }
+  }
+
+  @media (min-width: 1024px) {
     &:hover button {
       opacity: 65%;
 
@@ -141,7 +148,7 @@
 
   @media (max-width: 768px) {
     button {
-      opacity: 100%;
+      display: none;
     }
   }
 }
@@ -187,6 +194,22 @@
     h5 {
       font-size: 135%;
       font-weight: bold;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding-top: 0;
+    margin-top: 5%;
+
+    .item {
+      padding: min(1.2rem, 4vw) 0;
+      min-width: min(7rem, 24vw);
+      font-size: min(100%, 3.2vw);
+
+      img {
+        padding: min(1rem, 4vw) 2vw;
+        width: min(80%, 16vw);
+      }
     }
   }
 }

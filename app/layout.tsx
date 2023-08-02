@@ -9,7 +9,7 @@ import "the-new-css-reset/css/reset.css";
 
 import Analytic from "../components/analytic";
 
-const nexa = localFont({
+const Nexa = localFont({
   src: [
     {
       path: "./fonts/nexa_light.woff2",
@@ -40,11 +40,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pl" className={nexa.className}>
+    <html lang="pl" className={Nexa.className}>
       <body>
         {children}
 
-        {/* show analytics only in production */}
+        {/* show analytic component only in production */}
         {process.env.NODE_ENV !== "development" && <Analytic />}
 
         <footer>
