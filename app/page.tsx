@@ -289,11 +289,11 @@ export default function Home() {
         <section>
           {/* loading screen component */}
           {loading && (
-            <div className={styles.loading}>
+            <div className={styles.loader}>
               {!error && (
                 // loading animation
                 <>
-                  <div className={styles.loader} />
+                  <div className={styles.spinner} />
                   <h2>Ładowanie...</h2>
                 </>
               )}
