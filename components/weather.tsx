@@ -4,7 +4,7 @@ import moment from "moment";
 import "moment/locale/pl";
 moment().locale("pl");
 
-import styles from "./weather.module.scss";
+import styles from "@/styles/components/weather.module.scss";
 
 export default function Weather(params: { data: any }) {
   const data = params.data;

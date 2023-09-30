@@ -8,8 +8,8 @@ import moment from "moment";
 import "moment/locale/pl";
 moment().locale("pl");
 
-import styles from "./page.module.scss";
-import Weather from "../components/weather";
+import styles from "@/styles/home.module.scss";
+import Weather from "@/components/weather";
 
 const KEY = process.env.NEXT_PUBLIC_WEATHER_API_KEY; // api key from .env.local
 
@@ -188,7 +188,7 @@ export default function Home() {
   return (
     <>
       <header>
-        <div className="responsiveHolder">
+        <section>
           <div>
             <h1>Pogoda</h1>
 
@@ -282,11 +282,11 @@ export default function Home() {
               draggable={false}
             />
           </button>
-        </div>
+        </section>
       </header>
 
       <main>
-        <div className="responsiveHolder">
+        <section>
           {/* loading screen component */}
           {loading && (
             <div className={styles.loading}>
@@ -325,7 +325,7 @@ export default function Home() {
           >
             {!loading && <Weather data={data} />}
           </div>
-        </div>
+        </section>
       </main>
     </>
   );
