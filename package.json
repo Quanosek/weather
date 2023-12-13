@@ -1,8 +1,6 @@
 {
-  "version": "0.1.1",
-  "name": "pogoda",
-  "description": "Weather App built with Next.js",
-  "type": "module",
+  "version": "0.2.0",
+  "name": "weather-app",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -10,22 +8,24 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@types/node": "20.8.0",
-    "@types/react": "18.2.23",
-    "@types/react-dom": "18.2.8",
-    "axios": "^1.5.1",
-    "eslint": "8.50.0",
-    "eslint-config-next": "13.5.3",
-    "flag-icons": "^6.11.1",
+    "axios": "^1.6.2",
+    "flag-icons": "^7.1.0",
     "moment": "^2.29.4",
-    "next": "13.5.3",
-    "nextjs-google-adsense": "^1.0.0",
+    "next": "14.0.4",
+    "next-google-adsense": "^1.0.6",
     "nextjs-google-analytics": "^2.3.3",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "sass": "^1.68.0",
-    "sharp": "^0.32.6",
-    "the-new-css-reset": "^1.11.0",
-    "typescript": "5.2.2"
+    "react": "^18",
+    "react-dom": "^18",
+    "sass": "^1.69.5",
+    "sharp": "^0.33.0",
+    "the-new-css-reset": "^1.11.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.4",
+    "typescript": "^5"
   }
 }

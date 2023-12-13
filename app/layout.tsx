@@ -1,27 +1,27 @@
 import localFont from "next/font/local";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Link from "next/link";
+
+import AnalyticsComponent from "./components/analytics";
 
 import "/node_modules/flag-icons/css/flag-icons.min.css";
 
 import "the-new-css-reset/css/reset.css";
-import "@/styles/global.scss";
+import "./globals.scss";
 
-import Analytics from "@/components/analytics";
-
-// Global font-face
+// global font-face
 const Nexa = localFont({
   src: [
     {
-      path: "../fonts/nexa_light.woff2",
+      path: "./fonts/nexa_light.woff2",
       weight: "200",
     },
     {
-      path: "../fonts/nexa_regular.woff2",
+      path: "./fonts/nexa_regular.woff2",
       weight: "400",
     },
     {
-      path: "../fonts/nexa_bold.woff2",
+      path: "./fonts/nexa_bold.woff2",
       weight: "800",
     },
   ],
@@ -30,13 +30,21 @@ const Nexa = localFont({
   display: "swap",
 });
 
-// Default metadata
+// global metadata (default values)
 export const metadata: Metadata = {
   title: "Pogoda / klalo.pl",
-  description: "Weather App built with Next.js",
+  description: "Weather App",
 };
 
-// Default page layout
+// global viewport
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  themeColor: "white",
+};
+
+// app project layout
 export default function RootLayout({
   children,
 }: {
@@ -45,7 +53,7 @@ export default function RootLayout({
   return (
     <html lang="pl" className={Nexa.className}>
       <body>
-        {process.env.NODE_ENV !== "development" && <Analytics />}
+        <AnalyticsComponent />
 
         {children}
 

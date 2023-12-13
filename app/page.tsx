@@ -8,8 +8,9 @@ import moment from "moment";
 import "moment/locale/pl";
 moment().locale("pl");
 
-import styles from "@/styles/home.module.scss";
-import Weather from "@/components/weather";
+import styles from "./page.module.scss";
+
+import Weather from "./components/weather";
 
 const KEY = process.env.NEXT_PUBLIC_WEATHER_API_KEY; // api key from .env.local
 
