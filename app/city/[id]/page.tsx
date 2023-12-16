@@ -16,6 +16,8 @@ export default function City({ params }: { params: { id: number } }) {
   const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<any>();
 
+  const [error, setError] = useState<string>();
+
   const getData = async (id: number) => {
     setLoading(true);
 
@@ -33,6 +35,7 @@ export default function City({ params }: { params: { id: number } }) {
       .then(({ data }) => data)
       .catch((err: AxiosError) => console.error(err.message));
 
+    if (!data) return setError("Nie znaleziono miasta o podanym ID.");
     const { lat, lon } = data.coord;
 
     // https://openweathermap.org/api/air-pollution
@@ -116,6 +119,8 @@ export default function City({ params }: { params: { id: number } }) {
         return "Brak danych";
     }
   };
+
+  if (error) return <p className="error">{error}</p>;
 
   return (
     <section>

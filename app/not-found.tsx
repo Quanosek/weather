@@ -1,7 +1,15 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+
+import { useEffect } from "react";
+
 export default function NotFound() {
-  return (
-    <>
-      <p>Nie znaleziono strony</p>
-    </>
-  );
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push("/");
+  }, [router]);
+
+  return;
 }
