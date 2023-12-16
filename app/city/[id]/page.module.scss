@@ -1,4 +1,39 @@
-.currentHandler {
+.loader {
+  margin-top: 5%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+
+  .spinner {
+    border: 16px solid #d2d2d2;
+    border-top: 16px solid #4378bd;
+    border-radius: 50%;
+    height: 7.5rem;
+    aspect-ratio: 1/1;
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  h2 {
+    position: relative;
+    left: 5px;
+    font-size: 150%;
+    font-weight: bold;
+  }
+}
+
+.container {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -191,7 +226,7 @@
       height: auto;
     }
 
-    h5 {
+    h4 {
       font-size: 135%;
       font-weight: bold;
     }

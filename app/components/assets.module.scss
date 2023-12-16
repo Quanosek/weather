@@ -1,0 +1,80 @@
+.title {
+  margin-right: 1rem;
+  display: flex;
+  align-items: center;
+  border-radius: 0.4rem;
+
+  h1 {
+    font-size: 150%;
+  }
+}
+
+$input-width: 20rem;
+$search-width: 6rem;
+
+.search {
+  font-weight: bold;
+  gap: 0;
+
+  input {
+    width: $input-width;
+    border-radius: 0.4rem 0 0 0.4rem;
+    background-color: #ededed;
+
+    &:focus {
+      box-shadow: none;
+    }
+
+    &:hover {
+      background-color: #dfdfdf;
+    }
+  }
+
+  button {
+    height: 100%;
+    width: $search-width;
+    border-radius: 0 0.4rem 0.4rem 0;
+
+    &:hover {
+      background-color: #c5c5c5;
+    }
+  }
+}
+
+.results {
+  $safe-area: 1rem;
+
+  z-index: -1;
+  position: absolute;
+  top: calc(85% - $safe-area);
+
+  padding-top: $safe-area;
+  height: unset;
+  width: calc($input-width + $search-width);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+
+  color: rgba(#030303, 0.85);
+  background-color: #d2d2d2;
+  border-radius: 0 0 0.4rem 0.4rem;
+
+  div {
+    padding: 0.8rem 1.25rem;
+    gap: 8px;
+    border-radius: 0.4rem;
+    transition: 0.2s background-color ease-out;
+    cursor: pointer;
+
+    p {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    &:hover {
+      background-color: #b9b9b9;
+    }
+  }
+}

@@ -45,11 +45,6 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-section {
-  width: 100%;
-  max-width: 1440px;
-}
-
 b,
 h1,
 h2 {
@@ -65,27 +60,43 @@ button {
   transition: 0.2s background-color ease-out;
   cursor: pointer;
 
-  @media (min-width: 768px) {
-    &:hover {
-      background-color: #b9b9b9;
-    }
+  &:hover {
+    background-color: #b9b9b9;
   }
 }
 
 input {
   cursor: text;
-
-  // disable autofill browser styles
-  &:-webkit-autofill,
-  &:-webkit-autofill:focus {
-    transition: background-color 0s 600000s, color 0s 600000s;
-  }
 }
 
 button {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+section {
+  width: 100%;
+  max-width: 1440px;
+}
+
+main {
+  padding: calc(var(--header-height) + 2.5rem) 5% 2.5rem;
+  width: 100%;
+  min-height: calc(100svh);
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+
+  text-shadow: 4px 3px 7px rgba(#030303, 0.4);
+
+  background-image: url("/wallpaper.webp");
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-blend-mode: multiply;
+  background-color: rgba(#000000, 0.5);
 }
 
 header,
@@ -97,6 +108,7 @@ footer {
   align-items: center;
 
   section {
+    height: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -114,29 +126,29 @@ header {
   background: rgba(#030303, 0.25);
   backdrop-filter: blur(12px);
 
-  h1 {
-    font-size: 150%;
-    user-select: none;
-
-    @media (min-width: 768px) {
-      margin-right: 1rem;
-    }
+  section {
+    z-index: -1;
   }
 
   div {
+    height: 65%;
     display: flex;
     align-items: center;
     gap: 1rem;
-  }
 
-  img {
-    user-select: none;
+    & > * {
+      height: 100%;
+    }
   }
 
   button {
     padding: 0;
-    height: 2.5rem;
+    height: 85%;
     aspect-ratio: 1/1;
+  }
+
+  img {
+    user-select: none;
   }
 }
 
@@ -163,23 +175,4 @@ footer {
       gap: 5px;
     }
   }
-}
-
-main {
-  padding: calc(var(--header-height) + 2.5rem) 5% 2.5rem;
-  width: 100%;
-  min-height: calc(100svh);
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-
-  text-shadow: 4px 3px 7px rgba(#030303, 0.4);
-
-  background-image: url("/wallpaper.webp");
-  background-size: cover;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-blend-mode: multiply;
-  background-color: rgba(#000000, 0.5);
 }

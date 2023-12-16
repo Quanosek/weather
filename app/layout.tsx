@@ -1,8 +1,8 @@
 import localFont from "next/font/local";
 import type { Metadata, Viewport } from "next";
-import Link from "next/link";
 
 import AnalyticsComponent from "./components/analytics";
+import { Header, Footer } from "./components/assets";
 
 import "/node_modules/flag-icons/css/flag-icons.min.css";
 
@@ -40,8 +40,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  themeColor: "white",
+  themeColor: "black",
 };
 
 // app project layout
@@ -55,16 +54,19 @@ export default function RootLayout({
       <body>
         <AnalyticsComponent />
 
-        {children}
+        <header>
+          <section>
+            <Header />
+          </section>
+        </header>
+
+        <main>
+          <section>{children}</section>
+        </main>
 
         <footer>
           <section>
-            <p>
-              Stworzone z <span>💙</span> przez{" "}
-              <Link href="https://github.com/Quanosek">Jakuba Kłało</Link>
-            </p>
-
-            <p>Wszelkie prawa zastrzeżone &#169; 2023</p>
+            <Footer />
           </section>
         </footer>
       </body>
