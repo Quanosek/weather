@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+
 import { useState, useEffect } from "react";
 import axios, { AxiosError } from "axios";
 
@@ -12,7 +13,7 @@ import styles from "./page.module.scss";
 
 const appid = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
 
-export default function City({ params }: { params: { id: number } }) {
+export default function Page({ params }: { params: { id: number } }) {
   const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<any>();
 

@@ -163,7 +163,7 @@ export function Header() {
           }}
         >
           <Image
-            src={`/icons/fullscreen.svg`}
+            src="/icons/fullscreen.svg"
             alt="fullscreen"
             width={25}
             height={25}
