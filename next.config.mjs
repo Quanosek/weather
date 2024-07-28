@@ -2,6 +2,9 @@
 
 const nextConfig = {
   reactStrictMode: true,
+  images: {
+    minimumCacheTTL: 60,
+  },
 };
 
-module.exports = nextConfig;
+export default nextConfig;

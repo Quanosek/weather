@@ -1,9 +1,8 @@
 "use client";
 
 import Image from "next/image";
-
 import { useState, useEffect } from "react";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
 import moment from "moment";
 import "moment/locale/pl";
@@ -16,58 +15,47 @@ const appid = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
 export default function Page({ params }: { params: { id: number } }) {
   const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<any>();
-
   const [error, setError] = useState<string>();
 
   const getData = async (id: number) => {
     setLoading(true);
 
     // https://openweathermap.org/current
-    const data = await axios({
-      method: "get",
-      url: "https://api.openweathermap.org/data/2.5/weather",
-      params: {
-        id,
-        appid,
-        units: "metric",
-        lang: "pl",
-      },
-    })
+    const data = await axios
+      .get("https://api.openweathermap.org/data/2.5/weather", {
+        params: { id, appid, units: "metric", lang: "pl" },
+      })
       .then(({ data }) => data)
-      .catch((err: AxiosError) => console.error(err.message));
+      .catch((err) => console.error(err.message));
 
     if (!data) return setError("Nie znaleziono miasta o podanym ID.");
     const { lat, lon } = data.coord;
 
+    // https://openweathermap.org/api/geocoding-api
+    const name = await axios
+      .get("https://api.openweathermap.org/geo/1.0/reverse", {
+        params: { lat, lon, limit: 1, appid },
+      })
+      .then(({ data }) => data[0].local_names.pl)
+      .catch((err) => console.error(err.message));
+
     // https://openweathermap.org/api/air-pollution
-    const air = await axios({
-      method: "get",
-      url: "https://api.openweathermap.org/data/2.5/air_pollution",
-      params: {
-        lat,
-        lon,
-        appid,
-      },
-    })
+    const air = await axios
+      .get("https://api.openweathermap.org/data/2.5/air_pollution", {
+        params: { lat, lon, appid },
+      })
       .then(({ data }) => data.list[0])
-      .catch((err: AxiosError) => console.error(err.message));
+      .catch((err) => console.error(err.message));
 
     // https://openweathermap.org/forecast5
-    const forecast = await axios({
-      method: "get",
-      url: "https://api.openweathermap.org/data/2.5/forecast/",
-      params: {
-        lat,
-        lon,
-        appid,
-        units: "metric",
-        lang: "pl",
-      },
-    })
+    const forecast = await axios
+      .get("https://api.openweathermap.org/data/2.5/forecast/", {
+        params: { lat, lon, appid, units: "metric", lang: "pl" },
+      })
       .then(({ data }) => data.list)
-      .catch((err: AxiosError) => console.error(err.message));
+      .catch((err) => console.error(err.message));
 
-    setData({ ...data, air, forecast });
+    setData({ ...data, name, air, forecast });
     setLoading(false);
   };
 
@@ -252,9 +240,7 @@ export default function Page({ params }: { params: { id: number } }) {
 
             <div className={styles.forecastHandler}>
               <button
-                style={{
-                  left: "-3rem",
-                }}
+                style={{ left: "-3rem" }}
                 onClick={() => {
                   const scroll = document.getElementById(
                     "horizontal-scroll"
@@ -266,8 +252,8 @@ export default function Page({ params }: { params: { id: number } }) {
               </button>
 
               <div id="horizontal-scroll" className={styles.forecast}>
-                {data.forecast.map((item: any, index: number) => (
-                  <div key={index} className={styles.item}>
+                {data.forecast.map((item: any, i: number) => (
+                  <div key={i} className={styles.item}>
                     <div className={styles.data}>
                       <h3>
                         {moment
@@ -297,9 +283,7 @@ export default function Page({ params }: { params: { id: number } }) {
               </div>
 
               <button
-                style={{
-                  right: "-3rem",
-                }}
+                style={{ right: "-3rem" }}
                 onClick={() => {
                   const scroll = document.getElementById(
                     "horizontal-scroll"

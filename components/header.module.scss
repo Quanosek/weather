@@ -3,8 +3,10 @@
   display: flex;
   align-items: center;
   border-radius: 0.4rem;
+  cursor: default;
 
   h1 {
+    height: unset;
     font-size: 150%;
   }
 }

@@ -1,17 +1,15 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-
 import { useState } from "react";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
-import styles from "./assets.module.scss";
+import styles from "./header.module.scss";
 
 const appid = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
 
-export function Header() {
+export default function HeaderComponent() {
   const router = useRouter();
 
   const [input, setInput] = useState<string>("");
@@ -25,45 +23,36 @@ export function Header() {
     if (!value) return setResults(undefined);
 
     // https://openweathermap.org/api/geocoding-api
-    axios({
-      method: "get",
-      url: "https://api.openweathermap.org/geo/1.0/direct",
-      params: {
-        q: value,
-        appid,
-        limit: 5,
-      },
-    })
+    axios
+      .get("https://api.openweathermap.org/geo/1.0/direct", {
+        params: { q: value, limit: 5, appid },
+      })
       .then(({ data }) => setResults(data))
-      .catch((err: AxiosError) => console.error(err.message));
+      .catch((err) => console.error(err.message));
   };
 
   // Get weather data from API
-  const getAPI = (lat: number, lon: number) => {
-    // https://openweathermap.org/current
-    return axios({
-      method: "get",
-      url: "https://api.openweathermap.org/data/2.5/weather",
-      params: {
-        lat,
-        lon,
-        appid,
-        units: "metric",
-        lang: "pl",
-      },
-    });
+  const getAPI = async (lat: number, lon: number) => {
+    try {
+      // https://openweathermap.org/current
+      const { data } = await axios.get(
+        "https://api.openweathermap.org/data/2.5/weather",
+        { params: { lat, lon, appid, units: "metric", lang: "pl" } }
+      );
+      return data;
+    } catch (err) {
+      return console.error((err as Error).message);
+    }
   };
 
   // Redirect to city weather page
-  const Redirect = (result: any) => {
+  const Redirect = async (result: any) => {
     const { lat, lon } = result;
 
-    getAPI(lat, lon)
-      .then(({ data }) => {
-        router.push("/city/" + data.id);
-        setResults(undefined);
-      })
-      .catch((err: AxiosError) => console.error(err.message));
+    await getAPI(lat, lon).then((data) => {
+      router.push("/city/" + data.id);
+      setResults(undefined);
+    });
   };
 
   // Redirect to first result of list
@@ -77,27 +66,25 @@ export function Header() {
   // Redirect to current location weather page city id
   const CurrentLocation = () => {
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      async (position) => {
         const { latitude, longitude } = position.coords;
 
-        getAPI(latitude, longitude)
-          .then(({ data }) => {
-            router.push("/city/" + data.id);
-            setInput("");
-            setResults(undefined);
-          })
-          .catch((err: AxiosError) => console.error(err.message));
+        await getAPI(latitude, longitude).then((data) => {
+          router.replace("/city/" + data.id);
+          setInput("");
+          setResults(undefined);
+        });
       },
       (err) => console.error(err.message)
     );
   };
 
   return (
-    <>
+    <section>
       <div>
-        <Link className={styles.title} href="/">
+        <div className={styles.title} onClick={() => router.replace("/")}>
           <h1>Pogoda</h1>
-        </Link>
+        </div>
 
         <div className={styles.search}>
           <input
@@ -109,10 +96,10 @@ export function Header() {
             onFocus={(e) => {
               if (input) searching(e);
             }}
-            onKeyDown={(e: any) => {
+            onKeyDown={(e) => {
               if (e.key === "Enter") {
                 getFirstResult();
-                e.target.blur();
+                (e.target as HTMLInputElement).blur();
               }
             }}
           />
@@ -121,8 +108,8 @@ export function Header() {
 
           {results && (
             <div className={styles.results}>
-              {results.map((result: any, index: number) => (
-                <div key={index} onClick={() => Redirect(result)}>
+              {results.map((result: any, i) => (
+                <div key={i} onClick={() => Redirect(result)}>
                   <p>
                     {result.local_names
                       ? result.local_names.pl
@@ -140,7 +127,7 @@ export function Header() {
           )}
         </div>
 
-        <button onClick={CurrentLocation} title="Obecna lokalizacja urządzenia">
+        <button title="Obecna lokalizacja urządzenia" onClick={CurrentLocation}>
           <Image
             src="/icons/location.svg"
             alt="location"
@@ -171,19 +158,6 @@ export function Header() {
           />
         </button>
       </div>
-    </>
-  );
-}
-
-export function Footer() {
-  return (
-    <>
-      <p>
-        Stworzone z <span>💙</span> przez{" "}
-        <Link href="https://github.com/Quanosek">Jakuba Kłało</Link>
-      </p>
-
-      <p>Wszelkie prawa zastrzeżone &#169; 2023</p>
-    </>
+    </section>
   );
 }

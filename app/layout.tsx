@@ -1,15 +1,14 @@
-import localFont from "next/font/local";
+import Link from "next/link";
 import type { Metadata, Viewport } from "next";
-
-import AnalyticsComponent from "@/components/analytics";
-import { Header, Footer } from "@/components/assets";
-
 import "/node_modules/flag-icons/css/flag-icons.min.css";
+import Analytics from "@/components/analytics";
+import Header from "@/components/header";
 
 import "the-new-css-reset/css/reset.css";
 import "./globals.scss";
 
 // global font-face
+import localFont from "next/font/local";
 const Nexa = localFont({
   src: [
     {
@@ -33,17 +32,17 @@ const Nexa = localFont({
 // global metadata (default values)
 export const metadata: Metadata = {
   title: "Pogoda / klalo.pl",
-  description: "Prosta aplikacja pogodowa z wykorzystaniem OpenWeatherMap API,",
+  description:
+    "Prosta aplikacja pogodowa stworzona z wykorzystaniem publicznego API map OpenWeather.",
   icons: {
-    icon: "/favicon.ico",
+    icon: ["/favicons/favicon.ico", "/favicons/icon.svg"],
+    apple: "/favicons/apple-icon.png",
   },
 };
 
 // global viewport
 export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  themeColor: "black",
+  themeColor: "#000000",
 };
 
 // app project layout
@@ -55,12 +54,10 @@ export default function RootLayout({
   return (
     <html lang="pl" className={Nexa.className}>
       <body>
-        <AnalyticsComponent />
+        {process.env.NODE_ENV !== "development" && <Analytics />}
 
         <header>
-          <section>
-            <Header />
-          </section>
+          <Header />
         </header>
 
         <main>
@@ -69,7 +66,15 @@ export default function RootLayout({
 
         <footer>
           <section>
-            <Footer />
+            <p>
+              Stworzone z <span>💙</span> przez{" "}
+              <Link href="https://github.com/Quanosek">Jakuba Kłało</Link>
+            </p>
+
+            <p>
+              Wszelkie prawa zastrzeżone &#169; 2023-{new Date().getFullYear()}{" "}
+              | <Link href="https://www.klalo.pl">domena klalo.pl</Link>
+            </p>
           </section>
         </footer>
       </body>
