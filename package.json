@@ -1,5 +1,5 @@
 {
-  "version": "0.3.1",
+  "version": "0.3.2",
   "name": "weather",
   "description": "Simple responsive weather application based on OpenWeather public API",
   "scripts": {

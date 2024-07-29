@@ -28,7 +28,7 @@ export default function Page({ params }: { params: { id: number } }) {
       .then(({ data }) => data)
       .catch((err) => console.error(err.message));
 
-    if (!data) return setError("Nie znaleziono miasta o podanym ID.");
+    if (!data) return setError("Nie znaleziono miasta o podanym ID");
     const { lat, lon } = data.coord;
 
     // https://openweathermap.org/api/geocoding-api
@@ -36,7 +36,11 @@ export default function Page({ params }: { params: { id: number } }) {
       .get("https://api.openweathermap.org/geo/1.0/reverse", {
         params: { lat, lon, limit: 1, appid },
       })
-      .then(({ data }) => data[0].local_names.pl)
+      .then(({ data }) => {
+        const local = data[0].local_names.pl;
+        if (local) return local;
+        else return data[0].name;
+      })
       .catch((err) => console.error(err.message));
 
     // https://openweathermap.org/api/air-pollution

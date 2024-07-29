@@ -28,7 +28,7 @@ export default function HomePage() {
         }
       },
       (err) => {
-        setError("Nie przyznano uprawnień do lokalizacji.");
+        setError("Nie przyznano uprawnień do lokalizacji");
         console.error(err.message);
       }
     );

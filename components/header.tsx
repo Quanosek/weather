@@ -11,81 +11,57 @@ const appid = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
 
 export default function HeaderComponent() {
   const router = useRouter();
+  const [mobileMenu, showMobileMenu] = useState<boolean>(false);
 
-  const [input, setInput] = useState<string>("");
-  const [results, setResults] = useState<object[]>();
+  const SearchBar = () => {
+    const [input, setInput] = useState<string>("");
+    const [results, setResults] = useState<object[]>();
 
-  // Search for cities by name
-  const searching = (e: any) => {
-    const { value } = e.target;
+    const searching = (e: any) => {
+      const { value } = e.target;
 
-    setInput(value);
-    if (!value) return setResults(undefined);
+      setInput(value);
+      if (!value) return setResults(undefined);
 
-    // https://openweathermap.org/api/geocoding-api
-    axios
-      .get("https://api.openweathermap.org/geo/1.0/direct", {
-        params: { q: value, limit: 5, appid },
-      })
-      .then(({ data }) => setResults(data))
-      .catch((err) => console.error(err.message));
-  };
+      // https://openweathermap.org/api/geocoding-api
+      axios
+        .get("https://api.openweathermap.org/geo/1.0/direct", {
+          params: { q: value, limit: 5, appid },
+        })
+        .then(({ data }) => setResults(data))
+        .catch((err) => console.error(err.message));
+    };
 
-  // Get weather data from API
-  const getAPI = async (lat: number, lon: number) => {
-    try {
-      // https://openweathermap.org/current
-      const { data } = await axios.get(
-        "https://api.openweathermap.org/data/2.5/weather",
-        { params: { lat, lon, appid, units: "metric", lang: "pl" } }
-      );
-      return data;
-    } catch (err) {
-      return console.error((err as Error).message);
-    }
-  };
+    const getAPI = async (lat: number, lon: number) => {
+      try {
+        // https://openweathermap.org/current
+        const { data } = await axios.get(
+          "https://api.openweathermap.org/data/2.5/weather",
+          { params: { lat, lon, appid, units: "metric", lang: "pl" } }
+        );
+        return data;
+      } catch (err) {
+        return console.error((err as Error).message);
+      }
+    };
 
-  // Redirect to city weather page
-  const Redirect = async (result: any) => {
-    const { lat, lon } = result;
+    const redirect = async (result: any) => {
+      const { lat, lon } = result;
 
-    await getAPI(lat, lon).then((data) => {
-      router.push("/city/" + data.id);
-      setResults(undefined);
-    });
-  };
+      await getAPI(lat, lon).then((data) => {
+        router.push("/city/" + data.id);
+        setResults(undefined);
+      });
+    };
 
-  // Redirect to first result of list
-  const getFirstResult = () => {
-    if (!results) return;
+    const firstResult = () => {
+      if (!results) return;
+      localStorage.removeItem("location");
+      redirect(results[0]);
+    };
 
-    localStorage.removeItem("location");
-    Redirect(results[0]);
-  };
-
-  // Redirect to current location weather page city id
-  const CurrentLocation = () => {
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const { latitude, longitude } = position.coords;
-
-        await getAPI(latitude, longitude).then((data) => {
-          router.replace("/city/" + data.id);
-          setInput("");
-          setResults(undefined);
-        });
-      },
-      (err) => console.error(err.message)
-    );
-  };
-
-  return (
-    <section>
-      <div>
-        <div className={styles.title} onClick={() => router.replace("/")}>
-          <h1>Pogoda</h1>
-        </div>
-
+    return (
+      <div className={styles.searchContainer}>
         <div className={styles.search}>
           <input
             type="text"
@@ -98,18 +74,24 @@ export default function HeaderComponent() {
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                getFirstResult();
+                firstResult();
                 (e.target as HTMLInputElement).blur();
               }
             }}
           />
 
-          <button onClick={getFirstResult}>Szukaj</button>
+          <button onClick={firstResult}>Szukaj</button>
 
           {results && (
             <div className={styles.results}>
               {results.map((result: any, i) => (
-                <div key={i} onClick={() => Redirect(result)}>
+                <div
+                  key={i}
+                  onClick={() => {
+                    redirect(result);
+                    setTimeout(() => showMobileMenu(false), 300);
+                  }}
+                >
                   <p>
                     {result.local_names
                       ? result.local_names.pl
@@ -127,7 +109,24 @@ export default function HeaderComponent() {
           )}
         </div>
 
-        <button title="Obecna lokalizacja urządzenia" onClick={CurrentLocation}>
+        <button
+          title="Obecna lokalizacja urządzenia"
+          onClick={() => {
+            navigator.geolocation.getCurrentPosition(
+              async (position) => {
+                const { latitude, longitude } = position.coords;
+
+                await getAPI(latitude, longitude).then((data) => {
+                  router.replace("/city/" + data.id);
+                  setInput("");
+                  setResults(undefined);
+                  setTimeout(() => showMobileMenu(false), 300);
+                });
+              },
+              (err) => console.error(err.message)
+            );
+          }}
+        >
           <Image
             src="/icons/location.svg"
             alt="location"
@@ -137,8 +136,18 @@ export default function HeaderComponent() {
           />
         </button>
       </div>
+    );
+  };
 
-      <div>
+  return (
+    <section>
+      <button className={styles.title} onClick={() => router.replace("/")}>
+        <h1>Pogoda</h1>
+      </button>
+
+      <div className={styles.desktop}>
+        <SearchBar />
+
         <button
           title="Widok pełnego ekranu"
           onClick={() => {
@@ -157,6 +166,29 @@ export default function HeaderComponent() {
             draggable={false}
           />
         </button>
+      </div>
+
+      <label tabIndex={1} htmlFor="check" className={styles.hamburger}>
+        <input
+          id="check"
+          type="checkbox"
+          onClick={() => showMobileMenu(!mobileMenu)}
+          checked={mobileMenu}
+        />
+        <span />
+        <span />
+        <span />
+      </label>
+
+      <div
+        className={styles.mobileMenu}
+        style={{
+          opacity: mobileMenu ? 1 : 0,
+          visibility: mobileMenu ? "visible" : "hidden",
+          height: mobileMenu ? "100vh" : 0,
+        }}
+      >
+        <SearchBar />
       </div>
     </section>
   );
