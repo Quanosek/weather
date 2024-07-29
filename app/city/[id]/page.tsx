@@ -37,7 +37,7 @@ export default function Page({ params }: { params: { id: number } }) {
         params: { lat, lon, limit: 1, appid },
       })
       .then(({ data }) => {
-        const local = data[0].local_names.pl;
+        const local = data[0].local_names?.pl;
         if (local) return local;
         else return data[0].name;
       })
